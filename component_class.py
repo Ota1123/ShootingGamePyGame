@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
 
-
 GAME_IMG = pygame.image.load('resources/image/shoot.png').convert_alpha()
 
 BULLET_IMG = {
@@ -29,28 +28,30 @@ ENEMY_EXPLODE_IMG = {
 
 PLAYER_SPEED = 5
 
-PLAYER_BULLET_SPEED = 10
+PLAYER_BULLET_SPEED = 8
 
 ENEMY_SPEED = {
     'SMALL': 2
 }
 
-player_position = [189, 600]
+SCREEN_WIDTH = 480
+SCREEN_HEIGHT = 800
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, bullet_type, init_position):
         pygame.sprite.Sprite.__init__(self)
         self.image = BULLET_IMG[bullet_type]
         self.rect = self.image.get_rect()
-        self.rect.midbottom = init_pos
+        self.rect.midbottom = init_position
         self.speed = PLAYER_BULLET_SPEED
 
     def move(self):
         self.rect.top -= self.speed
 
 
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, player_rect, init_position):
+    def __init__(self, init_position):
        # Call the parent class (Sprite) constructor
        pygame.sprite.Sprite.__init__(self)
 
