@@ -1,4 +1,5 @@
 import pygame
+import random
 from pygame.locals import *
 
 GAME_IMG = pygame.image.load('resources/image/shoot.png').convert_alpha()
@@ -26,12 +27,12 @@ ENEMY_EXPLODE_IMG = {
                 GAME_IMG.subsurface((930, 697, 57, 43))]
 }
 
-PLAYER_SPEED = 5
+PLAYER_SPEED = 8
 
-PLAYER_BULLET_SPEED = 8
+PLAYER_BULLET_SPEED = 10
 
 ENEMY_SPEED = {
-    'SMALL': 2
+    'SMALL': 6
 }
 
 SCREEN_WIDTH = 480
@@ -61,6 +62,7 @@ class Player(pygame.sprite.Sprite):
        self.speed = PLAYER_SPEED
        self.bullets = pygame.sprite.Group()
        self.img_index = 0
+       self.mask = pygame.mask.from_surface(self.image[0])
        self.got_hit = False
 
     def shoot(self, bullet_type):
@@ -88,13 +90,15 @@ class Player(pygame.sprite.Sprite):
             self.rect.right = SCREEN_WIDTH
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, enemy_type, init_position):
+    def __init__(self, enemy_type):
         pygame.sprite.Sprite.__init__(self)
         self.image = ENEMY_IMG[enemy_type]
         self.explode_image = ENEMY_EXPLODE_IMG[enemy_type]
         self.rect = self.image.get_rect()
-        self.rect.topleft = init_pos
+        self.rect.topleft = [random.randint(0, SCREEN_WIDTH - self.rect.width), 0]
         self.speed = ENEMY_SPEED[enemy_type]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.explode_img_index = 0
 
     def move(self):
         self.rect.top += self.speed
